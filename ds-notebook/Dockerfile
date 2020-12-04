@@ -40,8 +40,8 @@ RUN update-alternatives --install /usr/bin/nano nano /bin/nano-tiny 10
 USER $NB_UID
 
 # Install Python 3 packages
-RUN conda update --yes -n base conda &&\
-    conda install --yes \
+RUN conda update --quiet --yes -n base conda &&\
+    conda install --quiet --yes \
     'beautifulsoup4=4.9.*' \
     'conda-forge::blas=*=openblas' \
     'bokeh=2.2.*' \
@@ -71,20 +71,20 @@ RUN conda update --yes -n base conda &&\
     'widgetsnbextension=3.5.*'\
     'xlrd=1.2.*' \
     && \
-    conda update --yes \
+    conda update --quiet --yes \
     'notebook' \
     'jupyterhub' \
     && \
     conda clean --all -f -y && \
-    pip install --upgrade jupyterlab==3.0.0rc11 && \
+#    pip install --upgrade jupyterlab==3.0.0rc11 && \
     # Activate ipywidgets extension in the environment that runs the notebook server
     jupyter nbextension enable --py widgetsnbextension --sys-prefix && \
     # Also activate ipywidgets extension for JupyterLab
     # Check this URL for most recent compatibilities
     # https://github.com/jupyter-widgets/ipywidgets/tree/master/packages/jupyterlab-manager
-    jupyter labextension install @jupyter-widgets/jupyterlab-manager@^2.0.0 --no-build && \
-    jupyter labextension install @bokeh/jupyter_bokeh@^2.0.0 --no-build && \
-    jupyter labextension install jupyter-matplotlib@^0.7.2 --no-build && \
+    jupyter labextension install @jupyter-widgets/jupyterlab-manager --no-build && \
+    jupyter labextension install @bokeh/jupyter_bokeh --no-build && \
+    jupyter labextension install jupyter-matplotlib --no-build && \
     jupyter lab build -y && \
     jupyter lab clean -y && \
     npm cache clean --force && \
